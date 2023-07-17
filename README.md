@@ -9,14 +9,21 @@ Canto images for all versions.
 Pull and use the image directly:
 
 ```sh
-docker run gcr.io/dfpl-playground/canto:5.0.2
+docker run --env-file .env gcr.io/dfpl-playground/canto:5.0.2
 ```
 
 Or build from it:
 
 ```dockerfile
 FROM gcr.io/dfpl-playground/canto:5.0.2
-COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod u+x /usr/local/bin/entrypoint.sh
-ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+# any executable within /docker-entrypoint.d/ will get loaded
+COPY ./20-extra-init.sh /docker-entrypoint.d/
+RUN chmod u+x /docker-entrypoint.d/20-extra-init.sh
+RUN apk add vim
 ```
+
+# Runtime configuration
+
+Most settings from the `~/.cantod/config/*.toml` files can be updated runtime using environment variables.
+Each environment variable follow a pattern of:
+`<FILENAME>_<SECTION>_<SETTING>` e.g. `CONFIG_STATESYNC_ENABLE`
