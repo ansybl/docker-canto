@@ -2,8 +2,9 @@ PROJECT=dfpl-playground
 REGISTRY=gcr.io/$(PROJECT)
 IMAGE_NAME=canto
 DOCKER_IMAGE=$(REGISTRY)/$(IMAGE_NAME)
-VERSION=5.0.2
-VERSIONS=1.0.0 2.0.1
+VERSION=6.0.0
+VERSIONS=1.0.0 2.0.1 3.0.0 4.0.0 5.0.2 6.0.0
+IMAGE_TAG=$(VERSION)
 
 
 docker/pull:
@@ -33,10 +34,10 @@ docker/push/versions:
 docker/push: docker/push/versions
 
 docker/run:
-	docker run $(DOCKER_IT) --rm $(DOCKER_IMAGE)
+	docker run -it --env-file .env --rm $(DOCKER_IMAGE):$(IMAGE_TAG)
 
 docker/run/sh:
-	docker run $(DOCKER_IT) --entrypoint /bin/sh --rm $(DOCKER_IMAGE)
+	docker run -it --env-file .env --entrypoint /bin/sh --rm $(DOCKER_IMAGE):$(IMAGE_TAG)
 
 lint/node:
 	npx prettier --check .github *.md
