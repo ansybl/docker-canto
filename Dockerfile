@@ -1,4 +1,4 @@
-ARG VERSION=6.0.0
+ARG VERSION=7.0.0
 FROM golang:1.20-alpine AS buildenv
 
 ARG VERSION
