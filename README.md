@@ -9,13 +9,17 @@ Canto images for all versions.
 Pull and use the image directly:
 
 ```sh
-docker run --env-file .env gcr.io/dfpl-playground/canto:5.0.2
+docker run --env-file .env gcr.io/dfpl-playground/canto
+```
+Or a specific version:
+```sh
+docker run --env-file .env gcr.io/dfpl-playground/canto:6.0.0
 ```
 
 Or build from it:
 
 ```dockerfile
-FROM gcr.io/dfpl-playground/canto:5.0.2
+FROM gcr.io/dfpl-playground/canto
 # any executable within /docker-entrypoint.d/ will get loaded
 COPY ./20-extra-init.sh /docker-entrypoint.d/
 RUN chmod u+x /docker-entrypoint.d/20-extra-init.sh
