@@ -4,7 +4,7 @@
 
 Canto images for all versions.
 
-# Usage
+## Usage
 
 Prepare the `.env` file:
 
@@ -40,8 +40,35 @@ RUN chmod u+x /docker-entrypoint.d/20-extra-init.sh
 RUN apk add vim
 ```
 
-# Runtime configuration
+## Runtime configuration
 
 Most settings from the `~/.cantod/config/*.toml` files can be updated runtime using environment variables.
 Each environment variable follow a pattern of:
 `<FILENAME>_<SECTION>_<SETTING>` e.g. `CONFIG_STATESYNC_ENABLE`
+
+For instance to state sync a node:
+
+```
+CHAIN_ID=canto_7700-1
+CONFIG_STATESYNC_ENABLE=true
+```
+
+Or to sync an archive node from scratch:
+
+```
+APP_PRUNING=nothing
+CHAIN_ID=canto_7700-1
+CONFIG_STATESYNC_ENABLE=false
+CONFIG_STATESYNC_TRUST_HEIGHT=0
+VERSION=1.0.0
+```
+
+## Docker compose
+
+We also provide a `docker-compose.yml` file that comes with optional monitoring using Prometheus and Grafana.
+
+```sh
+docker compose --profile optional up
+```
+
+Grafana dashboard is published on port 3000.
