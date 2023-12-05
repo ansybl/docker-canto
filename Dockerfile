@@ -18,7 +18,7 @@ WORKDIR /app
 RUN git clone --depth 1 --branch v$VERSION https://github.com/Canto-Network/Canto.git Canto-$VERSION && \
     cd Canto-$VERSION && \
     make && \
-    wget https://github.com/a8m/envsubst/releases/download/v1.2.0/envsubst-`uname -s`-`uname -m` -O /tmp/envsubst && \
+    wget https://github.com/a8m/envsubst/releases/download/v1.4.2/envsubst-$(uname -s)-$(if [ "$(uname -m)" = "aarch64" ]; then echo "arm64"; else uname -m; fi) -O /tmp/envsubst && \
     cd /app
 
 FROM alpine:3
@@ -37,7 +37,9 @@ RUN install -m 0755 -o root -g root -t /usr/local/bin /tmp/cantod && \
     install -m 0755 -o root -g root -t /usr/local/bin /tmp/envsubst && \
     rm /tmp/envsubst
 
-COPY config/ /
+COPY config/docker-entrypoint.sh /
+COPY config/docker-entrypoint.d/ /docker-entrypoint.d/
+COPY config/root/ /root/
 WORKDIR /root
 
 STOPSIGNAL SIGINT

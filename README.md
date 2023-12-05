@@ -6,14 +6,28 @@ Canto images for all versions.
 
 # Usage
 
-Pull and use the image directly:
+Prepare the `.env` file:
+
+```sh
+cp .env.example .env
+```
+
+Then pull and use the image directly:
 
 ```sh
 docker run --env-file .env gcr.io/dfpl-playground/canto
 ```
+
 Or a specific version:
+
 ```sh
-docker run --env-file .env gcr.io/dfpl-playground/canto:6.0.0
+docker run --env-file .env gcr.io/dfpl-playground/canto:7.0.0
+```
+
+Persisting chain data using volumes:
+
+```sh
+docker run --env-file .env --volume $(pwd)/data:/root/.cantod/data gcr.io/dfpl-playground/canto
 ```
 
 Or build from it:
