@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  canto:
+    image: us-docker.pkg.dev/ansybl/public/canto:${VERSION}
+    restart: unless-stopped
+    ports:
+      - "1317:1317" # Tendermint REST API
+      - "8545:8545" # Ethereum JSON-RPC
+      - "8546:8546" # Ethereum WS JSON-RPC
+      - "9090:9090" # Cosmos gRPC
+      - "9091:9091" # Cosmos gRPC-web
+      - "26656:26656" # Tendermint P2P
+      - "26657:26657" # Tendermint RPC
+    volumes:
+      - ./data:/root/.cantod/data
+    env_file:
+      - .env
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    profiles:
+      - optional
+    ports:
+      - "19090:9090"
+    volumes:
+      - prometheus_data:/prometheus
+      - ./config/etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana:10.2.2
+    profiles:
+      - optional
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./config/etc/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./config/etc/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    env_file:
+      - .env
+
+volumes:
+  prometheus_data:
+  grafana_data:

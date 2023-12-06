@@ -14,8 +14,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: docker/setup-buildx-action@v2
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
       - run: echo '${{ secrets.GOOGLE_CREDENTIALS }}' > $CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
       - run: make docker/login
       # so we can leverage caching during the build phase
