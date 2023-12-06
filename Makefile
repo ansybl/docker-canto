@@ -1,5 +1,8 @@
-PROJECT=dfpl-playground
-REGISTRY=gcr.io/$(PROJECT)
+PROJECT=ansybl
+REGISTRY_REGION=us-docker
+REGISTRY_HOSTNAME=$(REGISTRY_REGION).pkg.dev
+REGISTRY_REPOSITORY=public
+REGISTRY=$(REGISTRY_HOSTNAME)/$(PROJECT)/$(REGISTRY_REPOSITORY)
 IMAGE_NAME=canto
 DOCKER_IMAGE=$(REGISTRY)/$(IMAGE_NAME)
 VERSION=7.0.0
@@ -21,7 +24,7 @@ docker/build/versions:
 docker/build: docker/build/versions
 
 docker/login:
-	gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://gcr.io
+	gcloud auth configure-docker us-docker.pkg.dev
 
 docker/push/version/%:
 	docker push $(DOCKER_IMAGE):$*
