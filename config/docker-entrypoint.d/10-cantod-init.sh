@@ -4,7 +4,12 @@
 set -e
 
 CHAIN_ID=${CHAIN_ID:-canto_7700-1}
-GENESIS_URL=${GENESIS_URL:-https://raw.githubusercontent.com/Canto-Network/Canto/v${VERSION}/Networks/Mainnet/genesis.json}
+# versions that don't have a genesis file in GitHub are remapped here
+case "$VERSION" in
+    "5.0.0") REMAPPED_VERSION="5.0.1" ;;
+    *) REMAPPED_VERSION="$VERSION" ;;
+esac
+GENESIS_URL=${GENESIS_URL:-https://raw.githubusercontent.com/Canto-Network/Canto/v${REMAPPED_VERSION}/Networks/Mainnet/genesis.json}
 
 export_by_prefix() {
   prefix=$1

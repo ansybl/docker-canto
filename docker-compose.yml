@@ -18,6 +18,7 @@ services:
       - .env
   prometheus:
     image: prom/prometheus:v2.48.0
+    restart: unless-stopped
     profiles:
       - optional
     ports:
@@ -27,6 +28,7 @@ services:
       - ./config/etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
   grafana:
     image: grafana/grafana:10.2.2
+    restart: unless-stopped
     profiles:
       - optional
     ports:
