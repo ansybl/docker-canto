@@ -3,6 +3,6 @@ datasources:
   - name: prometheus
     orgId: 1
     type: prometheus
-    url: http://prometheus:19090
+    url: http://prometheus:9090
     isDefault: true
     editable: true
