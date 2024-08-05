@@ -1,5 +1,6 @@
-ARG VERSION=7.0.1
-FROM golang:1.20-alpine AS buildenv
+ARG VERSION=8.0.0
+ARG GO_VERSION=1.21
+FROM golang:${GO_VERSION}-alpine AS buildenv
 
 ARG VERSION
 
