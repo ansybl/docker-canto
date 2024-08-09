@@ -5,16 +5,25 @@ REGISTRY_REPOSITORY=public
 REGISTRY=$(REGISTRY_HOSTNAME)/$(PROJECT)/$(REGISTRY_REPOSITORY)
 IMAGE_NAME=canto
 DOCKER_IMAGE=$(REGISTRY)/$(IMAGE_NAME)
-VERSION=7.0.1
-VERSIONS=1.0.0 2.0.0 3.0.0 4.0.0 5.0.0 5.0.2 6.0.0 7.0.0 7.0.1
+VERSION=8.0.0
+VERSIONS=1.0.0 2.0.0 3.0.0 4.0.0 5.0.0 5.0.2 6.0.0 7.0.0 7.0.1 8.0.0
 IMAGE_TAG=$(VERSION)
 
+# Determine the Go version based on the Canto version
+define get_go_version
+if [ "$1" = "8.0.0" ]; then \
+    echo "1.21"; \
+else \
+    echo "1.20"; \
+fi
+endef
 
 docker/pull:
 	docker pull $(DOCKER_IMAGE):$(IMAGE_TAG)
 
 docker/build/version/%:
-	docker build --tag=$(DOCKER_IMAGE):$* --build-arg VERSION=$* .
+	$(eval GO_VERSION := $(shell $(call get_go_version,$*)))
+	docker build --tag=$(DOCKER_IMAGE):$* --build-arg VERSION=$* --build-arg GO_VERSION=$(GO_VERSION) .
 
 docker/build/versions:
 	for version in $(VERSIONS) ; do \
@@ -24,7 +33,7 @@ docker/build/versions:
 docker/build: docker/build/versions
 
 docker/login:
-	gcloud auth configure-docker us-docker.pkg.dev
+	gcloud auth configure-docker $(REGISTRY_REGION).pkg.dev
 
 docker/push/version/%:
 	docker push $(DOCKER_IMAGE):$*
