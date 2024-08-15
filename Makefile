@@ -5,13 +5,14 @@ REGISTRY_REPOSITORY=public
 REGISTRY=$(REGISTRY_HOSTNAME)/$(PROJECT)/$(REGISTRY_REPOSITORY)
 IMAGE_NAME=canto
 DOCKER_IMAGE=$(REGISTRY)/$(IMAGE_NAME)
-VERSION=8.0.0
-VERSIONS=1.0.0 2.0.0 3.0.0 4.0.0 5.0.0 5.0.2 6.0.0 7.0.0 7.0.1 7.1.0 8.0.0
+VERSION=8.1.1
+VERSIONS=1.0.0 2.0.0 3.0.0 4.0.0 5.0.0 5.0.2 6.0.0 7.0.0 7.0.1 7.1.0 8.0.0 8.1.0 8.1.1
 IMAGE_TAG=$(VERSION)
 
 # Determine the Go version based on the Canto version
 define get_go_version
-if [ "$1" = "8.0.0" ]; then \
+major_version=$$(echo $1 | cut -d'.' -f1); \
+if [ "$$major_version" -ge 8 ]; then \
     echo "1.21"; \
 else \
     echo "1.20"; \
