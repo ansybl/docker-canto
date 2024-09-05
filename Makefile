@@ -5,8 +5,8 @@ REGISTRY_REPOSITORY=public
 REGISTRY=$(REGISTRY_HOSTNAME)/$(PROJECT)/$(REGISTRY_REPOSITORY)
 IMAGE_NAME=canto
 DOCKER_IMAGE=$(REGISTRY)/$(IMAGE_NAME)
-VERSION=8.1.2
-VERSIONS=1.0.0 2.0.0 3.0.0 4.0.0 5.0.0 5.0.2 6.0.0 7.0.0 7.0.1 7.1.0 8.0.0 8.1.0 8.1.1 8.1.2
+VERSION=8.1.3
+VERSIONS=1.0.0 2.0.0 3.0.0 4.0.0 5.0.0 5.0.2 6.0.0 7.0.0 7.0.1 7.1.0 8.0.0 8.1.0 8.1.1 8.1.3
 IMAGE_TAG=$(VERSION)
 
 # Determine the Go version based on the Canto version
@@ -34,7 +34,7 @@ docker/build/versions:
 docker/build: docker/build/versions
 
 docker/login:
-	gcloud auth configure-docker $(REGISTRY_REGION).pkg.dev
+	gcloud auth configure-docker $(REGISTRY_HOSTNAME)
 
 docker/push/version/%:
 	docker push $(DOCKER_IMAGE):$*

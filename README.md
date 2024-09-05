@@ -21,7 +21,7 @@ docker run --env-file .env us-docker.pkg.dev/ansybl/public/canto
 Or a specific version:
 
 ```sh
-docker run --env-file .env us-docker.pkg.dev/ansybl/public/canto:8.1.2
+docker run --env-file .env us-docker.pkg.dev/ansybl/public/canto:8.1.3
 ```
 
 Persisting chain data using volumes:
