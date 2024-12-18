@@ -93,7 +93,7 @@ laddr = "${CONFIG_RPC_LADDR:-tcp://0.0.0.0}:${RPC_PORT:-26657}"
 # A list of origins a cross-domain request can be executed from
 # Default value '[]' disables cors support
 # Use '["*"]' to allow any origin
-cors_allowed_origins = []
+cors_allowed_origins = ${CONFIG_RPC_CORS_ALLOWED_ORIGINS:-[]}
 
 # A list of methods the client is allowed to use with cross-domain requests
 cors_allowed_methods = ["HEAD", "GET", "POST", ]
