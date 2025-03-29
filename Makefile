@@ -6,7 +6,7 @@ REGISTRY=$(REGISTRY_HOSTNAME)/$(PROJECT)/$(REGISTRY_REPOSITORY)
 IMAGE_NAME=canto
 DOCKER_IMAGE=$(REGISTRY)/$(IMAGE_NAME)
 VERSION=8.1.3
-VERSIONS=1.0.0 2.0.0 3.0.0 4.0.0 5.0.0 5.0.2 6.0.0 7.0.0 7.0.1 7.1.0 8.0.0 8.1.0 8.1.1 8.1.3
+VERSIONS=1.0.0 2.0.0 2.0.2 3.0.0 4.0.0 5.0.0 5.0.2 6.0.0 7.0.0 7.0.1 7.1.0 8.0.0 8.1.0 8.1.1 8.1.3
 IMAGE_TAG=$(VERSION)
 
 # Determine the Go version based on the Canto version
@@ -24,7 +24,13 @@ docker/pull:
 
 docker/build/version/%:
 	$(eval GO_VERSION := $(shell $(call get_go_version,$*)))
-	docker build --tag=$(DOCKER_IMAGE):$* --build-arg VERSION=$* --build-arg GO_VERSION=$(GO_VERSION) .
+	# simulate a v2.0.2 tag using the thomas/archive-patch branch, refs:
+	# https://github.com/Canto-Network/Canto/issues/97
+	if [ "$*" = "2.0.2" ]; then \
+	    docker build --tag=$(DOCKER_IMAGE):$* --build-arg VERSION=$* --build-arg BRANCH=thomas/archive-patch --build-arg GO_VERSION=$(GO_VERSION) .; \
+	else \
+	    docker build --tag=$(DOCKER_IMAGE):$* --build-arg VERSION=$* --build-arg GO_VERSION=$(GO_VERSION) .; \
+	fi
 
 docker/build/versions:
 	for version in $(VERSIONS) ; do \
