@@ -6,6 +6,7 @@ set -e
 CHAIN_ID=${CHAIN_ID:-canto_7700-1}
 # versions that don't have a genesis file in GitHub are remapped here
 case "$VERSION" in
+    "2.0.2") REMAPPED_VERSION="2.0.0" ;;
     "5.0.0") REMAPPED_VERSION="5.0.1" ;;
     *) REMAPPED_VERSION="$VERSION" ;;
 esac

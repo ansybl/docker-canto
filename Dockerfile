@@ -2,6 +2,7 @@ ARG VERSION=8.1.3
 ARG GO_VERSION=1.21
 FROM golang:${GO_VERSION}-alpine AS buildenv
 
+ARG BRANCH
 ARG VERSION
 
 # Set up dependencies
@@ -16,9 +17,17 @@ RUN apk add --update --no-cache \
 # Set working directory for the build
 WORKDIR /app
 
-RUN git clone --depth 1 --branch v$VERSION https://github.com/Canto-Network/Canto.git Canto-$VERSION && \
-    cd Canto-$VERSION && \
-    make && \
+# simulate a v2.0.2 tag using the thomas/archive-patch branch, refs:
+# https://github.com/Canto-Network/Canto/issues/97
+RUN if [ -n "$BRANCH" ]; then \
+        git clone --branch "$BRANCH" https://github.com/Canto-Network/Canto.git Canto-$VERSION && \
+        cd Canto-$VERSION && \
+        make; \
+    else \
+        git clone --depth 1 --branch v$VERSION https://github.com/Canto-Network/Canto.git Canto-$VERSION && \
+        cd Canto-$VERSION && \
+        make; \
+    fi && \
     wget https://github.com/a8m/envsubst/releases/download/v1.4.2/envsubst-$(uname -s)-$(if [ "$(uname -m)" = "aarch64" ]; then echo "arm64"; else uname -m; fi) -O /tmp/envsubst && \
     cd /app
 
